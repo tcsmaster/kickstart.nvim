@@ -845,13 +845,13 @@ require('lazy').setup {
   },
   -- colorscheme
   {
-    'AlexvZyl/nordic.nvim',
+    'rmehri01/onenord.nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      require('nordic').load()
+      require('onenord').setup()
+      vim.cmd.colorscheme 'onenord'
     end,
-    vim.cmd.colorscheme 'nordic',
   },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },

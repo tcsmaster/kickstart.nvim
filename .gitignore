@@ -2,5 +2,8 @@ tags
 test.sh
 .luarc.json
 nvim
-
-spell/
+.dockerignore
+Dockerfile
+desc.txt
+spell/*
+fonts/*

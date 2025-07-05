@@ -812,8 +812,8 @@ require('lazy').setup {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
           lualine_c = { 'filename' },
-          lualine_x = { 'encoding', 'fileformat', 'filetype' },
-          lualine_y = { 'progress' },
+          lualine_x = { 'os.date()', 'filetype' },
+          lualine_y = { 'FugitiveHead' },
           lualine_z = { 'location' },
         },
         inactive_sections = {
@@ -834,8 +834,8 @@ require('lazy').setup {
   {
     'gaborvecsei/memento.nvim',
     config = function()
-      vim.keymap.set('n', '<leader> mh', "<cmd>lua require('memento').toggle()<CR>")
-      vim.keymap.set('n', '<leader> md', "<cmd>lua require('memento').clear_history()<CR>")
+      vim.keymap.set('n', '<leader>mh', "<cmd>lua require('memento').toggle()<CR>")
+      vim.keymap.set('n', '<leader>md', "<cmd>lua require('memento').clear_history()<CR>")
       vim.g.memento_history = 20
       vim.g.memento_shorten_path = true
       vim.g.memento_window_width = 80

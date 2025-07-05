@@ -835,6 +835,7 @@ require('lazy').setup {
     'gaborvecsei/memento.nvim',
     config = function()
       vim.keymap.set('n', '<leader> mh', "<cmd>lua require('memento').toggle()<CR>")
+      vim.keymap.set('n', '<leader> md', "<cmd>lua require('memento').clear_history()<CR>")
       vim.g.memento_history = 20
       vim.g.memento_shorten_path = true
       vim.g.memento_window_width = 80
@@ -843,12 +844,10 @@ require('lazy').setup {
   },
   -- colorscheme
   {
-    'rmehri01/onenord.nvim',
-    lazy = false,
-    priority = 1000,
+    'EdenEast/nightfox.nvim',
     config = function()
-      require('onenord').setup()
-      vim.cmd.colorscheme 'onenord'
+      require('nightfox').setup()
+      vim.cmd 'colorscheme nightfox'
     end,
   },
   -- Highlight todo, notes, etc in comments
@@ -924,4 +923,4 @@ require('lazy').setup {
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=2 sts=2 sw=2 ei

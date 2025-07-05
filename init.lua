@@ -790,7 +790,7 @@ require('lazy').setup {
       require('lualine').setup {
         options = {
           icons_enabled = true,
-          theme = 'horizon',
+          theme = 'powerline',
           component_separators = { left = '', right = '' },
           section_separators = { left = '', right = '' },
           disabled_filetypes = {
@@ -822,10 +822,10 @@ require('lazy').setup {
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'FugitiveHead' },
+          lualine_b = { { 'b:gitsigns_head', icon = '' } },
           lualine_c = { 'filename' },
-          lualine_x = { { 'datetime', style = '("%H:%M")' }, 'filetype' },
-          lualine_y = { { 'b:gitsigns_head', icon = '' } },
+          lualine_x = { { 'datetime', style = '%H:%M' }, 'filetype' },
+          lualine_y = { '' },
           lualine_z = { 'location' },
         },
         inactive_sections = {

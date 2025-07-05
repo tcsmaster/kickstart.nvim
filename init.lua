@@ -826,7 +826,7 @@ require('lazy').setup {
           lualine_c = {
             {
               'filename',
-              path = 2,
+              path = 4,
               symbols = {
                 modified = '[+]',
                 readonly = '[-]',

@@ -775,6 +775,18 @@ require('lazy').setup {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+      local function clock()
+        if vim.opt.columns:get() < 110 or vim.opt.lines:get() < 25 then
+          return ''
+        end
+
+        local time = tostring(os.date()):sub(12, 16)
+        if os.time() % 2 == 1 then
+          time = time:gsub(':', ' ')
+        end -- make the `:` blink
+        return time
+      end
+
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -810,10 +822,10 @@ require('lazy').setup {
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_b = { 'FugitiveHead' },
           lualine_c = { 'filename' },
-          lualine_x = { 'os.date()', 'filetype' },
-          lualine_y = { 'FugitiveHead' },
+          lualine_x = { clock(), 'filetype' },
+          lualine_y = { { 'b:gitsigns_head', icon = '' } },
           lualine_z = { 'location' },
         },
         inactive_sections = {

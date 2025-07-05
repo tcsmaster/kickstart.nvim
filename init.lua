@@ -823,7 +823,18 @@ require('lazy').setup {
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { { 'b:gitsigns_head', icon = '' }, 'diff', 'diagnostics' },
-          lualine_c = { { 'filename', path = 1 } },
+          lualine_c = {
+            {
+              'filename',
+              path = 2,
+              symbols = {
+                modified = '[+]',
+                readonly = '[-]',
+                unnamed = '[No Name]',
+                newfile = '[New]',
+              },
+            },
+          },
           lualine_x = { { 'datetime', style = '%H:%M' }, 'filetype' },
           lualine_y = { 'buffers' },
           lualine_z = { 'location' },

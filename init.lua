@@ -824,7 +824,7 @@ require('lazy').setup {
           lualine_a = { 'mode' },
           lualine_b = { 'FugitiveHead' },
           lualine_c = { 'filename' },
-          lualine_x = { clock(), 'filetype' },
+          lualine_x = { { 'datetime', style = '("%H:%M")' }, 'filetype' },
           lualine_y = { { 'b:gitsigns_head', icon = '' } },
           lualine_z = { 'location' },
         },

@@ -999,7 +999,6 @@ require('lazy').setup {
       -- add options here
     },
   },
-  require 'kickstart.plugins.gitsigns',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

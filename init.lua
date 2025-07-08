@@ -155,12 +155,6 @@ rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup {
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
@@ -175,9 +169,6 @@ require('lazy').setup {
   --            })
   --        end,
   --    }
-  --
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -840,18 +831,6 @@ require('lazy').setup {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local function clock()
-        if vim.opt.columns:get() < 110 or vim.opt.lines:get() < 25 then
-          return ''
-        end
-
-        local time = tostring(os.date()):sub(12, 16)
-        if os.time() % 2 == 1 then
-          time = time:gsub(':', ' ')
-        end -- make the `:` blink
-        return time
-      end
-
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -1006,7 +985,20 @@ require('lazy').setup {
       indent = { enable = true, disable = { 'ruby' } },
     },
   },
-  require 'kickstart.plugins.neo-tree',
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'MunifTanjim/nui.nvim',
+    },
+    lazy = false,
+    ---@module "neo-tree"
+    ---@type neotree.Config?
+    opts = {
+      -- add options here
+    },
+  },
   require 'kickstart.plugins.gitsigns',
 }
 

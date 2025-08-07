@@ -692,10 +692,8 @@ require('lazy').setup {
 		config = function()
 			require('lualine').setup {
 				options = {
-					icons_enabled = true,
+					icons_enabled = false,
 					theme = 'powerline',
-					component_separators = { left = '|', right = '|' },
-					section_separators = { left = '|', right = '|' },
 					disabled_filetypes = {
 						statusline = {},
 						winbar = {},

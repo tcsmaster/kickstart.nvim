@@ -176,43 +176,45 @@ require('lazy').setup {
 				end, { desc = 'Jump to previous git hunk' })
 
 				-- Actions
-				map('n', '<leader>hs', gitsigns.stage_hunk)
-				map('n', '<leader>hr', gitsigns.reset_hunk)
+				map('n', '<leader>hs', gitsigns.stage_hunk, { desc = "Stage current hunk" })
+				map('n', '<leader>hr', gitsigns.reset_hunk, { desc = "Reset current hunk" })
 
 				map('v', '<leader>hs', function()
 					gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-				end)
+				end, { desc = "Stage current hunk in visual mode" })
 
 				map('v', '<leader>hr', function()
 					gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-				end)
+				end, { desc = "Reset current hunk in visual mode" })
 
-				map('n', '<leader>hS', gitsigns.stage_buffer)
-				map('n', '<leader>hR', gitsigns.reset_buffer)
-				map('n', '<leader>hp', gitsigns.preview_hunk)
-				map('n', '<leader>hi', gitsigns.preview_hunk_inline)
+				map('n', '<leader>hS', gitsigns.stage_buffer, { desc = "Stage current buffer (file)" })
+				map('n', '<leader>hR', gitsigns.reset_buffer, { desc = "Reset current buffer (file)" })
+				map('n', '<leader>hp', gitsigns.preview_hunk, { desc = "Preview current hunk in a separate window" })
+				map('n', '<leader>hi', gitsigns.preview_hunk_inline,
+					{ desc = "Preview current hunk in a separate window inline" })
 
 				map('n', '<leader>hb', function()
 					gitsigns.blame_line { full = true }
-				end)
+				end, { desc = "Blame current line" })
 
-				map('n', '<leader>hd', gitsigns.diffthis)
+				map('n', '<leader>hd', gitsigns.diffthis, { desc = "Git diff current buffer" })
 
 				map('n', '<leader>hD', function()
 					gitsigns.diffthis '~'
-				end)
+				end, { desc = "Git diff only changes" })
 
 				map('n', '<leader>hQ', function()
 					gitsigns.setqflist 'all'
-				end)
-				map('n', '<leader>hq', gitsigns.setqflist)
+				end, { desc = "List all the changes in a new window at the bottom" })
+				map('n', '<leader>hq', gitsigns.setqflist, { desc = "List all changes at the bottom" })
 
 				-- Toggles
-				map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-				map('n', '<leader>tw', gitsigns.toggle_word_diff)
+				map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
+				map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = "Toggle word diff and highlight it" })
 
 				-- Text object
-				map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
+				map({ 'o', 'x' }, 'ih', gitsigns.select_hunk,
+					{ desc = "Allows the current hunk to be manipulated on (yank, delete, etc." })
 			end,
 			signs = {
 				add = { text = '+' },

@@ -449,7 +449,7 @@ require('lazy').setup {
 					-- Jump to the type of the word under your cursor.
 					--  Useful when you're not sure what type a variable is and you want to see
 					--  the definition of its *type*, not where it was *defined*.
-					map('<leader>gt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+					map('<leader>grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
 					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 					---@param client vim.lsp.Client
@@ -602,7 +602,7 @@ require('lazy').setup {
 			formatters_by_ft = {
 				-- lua = { 'stylua' },
 				-- Conform can also run multiple formatters sequentially
-				python = { "isort", "black" },
+				python = { 'ruff_fix', 'ruff_organize_imports' },
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -621,6 +621,7 @@ require('lazy').setup {
 				version = '2.*',
 				build = (function()
 					-- Build Step is needed for regex support in snippets.
+
 					-- This step is not supported in many windows environments.
 					-- Remove the below condition to re-enable on windows.
 					if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
@@ -739,7 +740,7 @@ require('lazy').setup {
 						},
 					},
 					lualine_x = { { 'datetime', style = '%H:%M' }, 'filetype' },
-					lualine_y = { 'buffers' },
+					lualine_y = {},
 					lualine_z = { 'location' },
 				},
 				inactive_sections = {
@@ -847,12 +848,70 @@ require('lazy').setup {
 	{
 		'MeanderingProgrammer/render-markdown.nvim',
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
-		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you use standalone mini plugins
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
 		opts = {},
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		-- configuration
+		config = require("nvim-treesitter-textobjects").setup {
+			move = {
+				enable = true,
+				set_jumps = true, -- whether to set jumps in the jumplist
+				goto_next_start = {
+					["]m"] = "@function.outer",
+					["gj"] = "@function.outer",
+					["]]"] = "@class.outer",
+					["]b"] = "@block.outer",
+					["]a"] = "@parameter.inner",
+				},
+				goto_next_end = {
+					["]M"] = "@function.outer",
+					["gJ"] = "@function.outer",
+					["]["] = "@class.outer",
+					["]B"] = "@block.outer",
+					["]A"] = "@parameter.inner",
+				},
+				goto_previous_start = {
+					["[m"] = "@function.outer",
+					["gk"] = "@function.outer",
+					["[["] = "@class.outer",
+					["[b"] = "@block.outer",
+					["[a"] = "@parameter.inner",
+				},
+				goto_previous_end = {
+					["[M"] = "@function.outer",
+					["gK"] = "@function.outer",
+					["[]"] = "@class.outer",
+					["[B"] = "@block.outer",
+					["[A"] = "@parameter.inner",
+				},
+			},
+			select = {
+				-- Automatically jump forward to textobj, similar to targets.vim
+				enable = true,
+				lookahead = true,
+				keymaps = {
+					["af"] = "@function.outer",
+					["if"] = "@function.inner",
+					["ac"] = "@class.outer",
+					["ic"] = "@class.inner",
+					["ab"] = "@block.outer",
+					["ib"] = "@block.inner",
+					["al"] = "@loop.outer",
+					["il"] = "@loop.inner",
+					["a/"] = "@comment.outer",
+					["i/"] = "@comment.outer", -- no inner for comment
+					["aa"] = "@parameter.outer", -- parameter -> argument
+					["ia"] = "@parameter.inner",
+				},
+			},
+		},
+
 	}
+
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

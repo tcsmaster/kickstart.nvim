@@ -693,7 +693,7 @@ require('lazy').setup {
 		config = function()
 			require('lualine').setup {
 				options = {
-					icons_enabled = false,
+					icons_enabled = true,
 					theme = 'powerline',
 					disabled_filetypes = {
 						statusline = {},
@@ -756,17 +756,7 @@ require('lazy').setup {
 			}
 		end,
 	},
-	{
-		'gaborvecsei/memento.nvim',
-		config = function()
-			vim.keymap.set('n', '<leader>mh', "<cmd>lua require('memento').toggle()<CR>")
-			vim.keymap.set('n', '<leader>md', "<cmd>lua require('memento').clear_history()<CR>")
-			vim.g.memento_history = 20
-			vim.g.memento_shorten_path = true
-			vim.g.memento_window_width = 80
-			vim.g.memento_window_height = 14
-		end,
-	},
+
 	-- colorscheme
 	{
 		'EdenEast/nightfox.nvim',
@@ -818,10 +808,10 @@ require('lazy').setup {
 	{ -- Highlight, edit, and navigate code
 		'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate',
-		main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+		main = 'nvim-treesitter.config', -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
-			ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'css' },
+			ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'python','markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'css' },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			incremental_selection = {
@@ -845,12 +835,19 @@ require('lazy').setup {
 	},
 	{
 		'MeanderingProgrammer/render-markdown.nvim',
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
-		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you use standalone mini plugins
+		dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you use standalone mini plugins
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
 		opts = {},
 	},
+	{
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+}
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

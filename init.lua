@@ -811,7 +811,7 @@ require('lazy').setup {
 		main = 'nvim-treesitter.config', -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
-			ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'python','markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'css' },
+			ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'python', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'css' },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			incremental_selection = {
@@ -842,12 +842,12 @@ require('lazy').setup {
 		opts = {},
 	},
 	{
-    'windwp/nvim-autopairs',
-    event = "InsertEnter",
-    config = true
-    -- use opts = {} for passing setup options
-    -- this is equivalent to setup({}) function
-}
+		'windwp/nvim-autopairs',
+		event = "InsertEnter",
+		config = true
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	}
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

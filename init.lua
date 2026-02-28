@@ -179,15 +179,11 @@ require('lazy').setup {
 				map('n', '<leader>hs', gitsigns.stage_hunk, { desc = "Stage current hunk" })
 				map('n', '<leader>hr', gitsigns.reset_hunk, { desc = "Reset current hunk" })
 
-				map('v', '<leader>hs', function()
-					gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-				end, { desc = "Stage current hunk in visual mode" })
-
 				map('v', '<leader>hr', function()
 					gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
 				end, { desc = "Reset current hunk in visual mode" })
 
-				map('n', '<leader>hS', gitsigns.stage_buffer, { desc = "Stage current buffer (file)" })
+				map('n', '<leader>hs', gitsigns.stage_buffer, { desc = "Stage current buffer (file)" })
 				map('n', '<leader>hR', gitsigns.reset_buffer, { desc = "Reset current buffer (file)" })
 				map('n', '<leader>hp', gitsigns.preview_hunk, { desc = "Preview current hunk in a separate window" })
 				map('n', '<leader>hi', gitsigns.preview_hunk_inline,
@@ -819,6 +815,7 @@ require('lazy').setup {
 	},
 	{ -- Highlight, edit, and navigate code
 		'nvim-treesitter/nvim-treesitter',
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		build = ':TSUpdate',
 		main = 'nvim-treesitter.configs', -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -843,6 +840,55 @@ require('lazy').setup {
 				additional_vim_regex_highlighting = { 'ruby' },
 			},
 			indent = { enable = true, disable = { 'ruby' } },
+			textobjects = {
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+					goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+					goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+					goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+				},
+				select = {
+					-- Automatically jump forward to textobj, similar to targets.vim
+					lookahead = true,
+					-- You can choose the select mode (default is charwise 'v')
+					--
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * method: eg 'v' or 'o'
+					-- and should return the mode ('v', 'V', or '<c-v>') or a table
+					-- mapping query_strings to modes.
+					selection_modes = {
+						['@parameter.outer'] = 'v', -- charwise
+						['@function.outer'] = 'V', -- linewise
+						['@class.outer'] = '<c-v>', -- blockwise
+					},
+					keymaps = {
+						["af"] = "@function.outer",
+						["if"] = "@function.inner",
+						["ac"] = "@class.outer",
+						["ic"] = "@class.inner",
+						["ab"] = "@block.outer",
+						["ib"] = "@block.inner",
+						["al"] = "@loop.outer",
+						["il"] = "@loop.inner",
+						["a/"] = "@comment.outer",
+						["i/"] = "@comment.outer", -- no inner for comment
+						["aa"] = "@parameter.outer", -- parameter -> argument
+						["ia"] = "@parameter.inner",
+					},
+					-- If you set this to `true` (default is `false`) then any textobject is
+					-- extended to include preceding or succeeding whitespace. Succeeding
+					-- whitespace has priority in order to act similarly to eg the built-in
+					-- `ap`.
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * selection_mode: eg 'v'
+					-- and should return true of false
+					include_surrounding_whitespace = false,
+				}
+			}
 		},
 	},
 	{
@@ -853,65 +899,6 @@ require('lazy').setup {
 		---@type render.md.UserConfig
 		opts = {},
 	},
-	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		-- configuration
-		config = require("nvim-treesitter-textobjects").setup {
-			move = {
-				enable = true,
-				set_jumps = true, -- whether to set jumps in the jumplist
-				goto_next_start = {
-					["]m"] = "@function.outer",
-					["gj"] = "@function.outer",
-					["]]"] = "@class.outer",
-					["]b"] = "@block.outer",
-					["]a"] = "@parameter.inner",
-				},
-				goto_next_end = {
-					["]M"] = "@function.outer",
-					["gJ"] = "@function.outer",
-					["]["] = "@class.outer",
-					["]B"] = "@block.outer",
-					["]A"] = "@parameter.inner",
-				},
-				goto_previous_start = {
-					["[m"] = "@function.outer",
-					["gk"] = "@function.outer",
-					["[["] = "@class.outer",
-					["[b"] = "@block.outer",
-					["[a"] = "@parameter.inner",
-				},
-				goto_previous_end = {
-					["[M"] = "@function.outer",
-					["gK"] = "@function.outer",
-					["[]"] = "@class.outer",
-					["[B"] = "@block.outer",
-					["[A"] = "@parameter.inner",
-				},
-			},
-			select = {
-				-- Automatically jump forward to textobj, similar to targets.vim
-				enable = true,
-				lookahead = true,
-				keymaps = {
-					["af"] = "@function.outer",
-					["if"] = "@function.inner",
-					["ac"] = "@class.outer",
-					["ic"] = "@class.inner",
-					["ab"] = "@block.outer",
-					["ib"] = "@block.inner",
-					["al"] = "@loop.outer",
-					["il"] = "@loop.inner",
-					["a/"] = "@comment.outer",
-					["i/"] = "@comment.outer", -- no inner for comment
-					["aa"] = "@parameter.outer", -- parameter -> argument
-					["ia"] = "@parameter.inner",
-				},
-			},
-		},
-
-	}
-
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

@@ -798,12 +798,11 @@ require('lazy').setup {
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
-  { -- Highlight, edit, and navigate code
+  {
     'nvim-treesitter/nvim-treesitter',
-    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    lazy = false,
     build = ':TSUpdate',
     branch = 'main',
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
     config = function()
       ---@param buf integer
       ---@param language string
@@ -839,77 +838,25 @@ require('lazy').setup {
             treesitter_try_attach(buf, language)
           elseif vim.tbl_contains(available_parsers, language) then
             -- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
-            require('nvim-treesitter').install(language):await(function()
-              treesitter_try_attach(buf, language)
-            end)
+            require('nvim-treesitter').install(language):await(function() end)
           else
             -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
             treesitter_try_attach(buf, language)
           end
         end,
       })
-
-      -- ensure basic parser are installed
-      local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'Dockerfile', 'yaml', 'toml', 'vimdoc' }
-      require('nvim-treesitter').install(parsers)
     end,
-    textobjects = {
-      move = {
-        enable = true,
-        set_jumps = true,
-        goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
-        goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
-        goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
-        goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
-      },
-      select = {
-        -- Automatically jump forward to textobj, similar to targets.vim
-        lookahead = true,
-        -- You can choose the select mode (default is charwise 'v')
-        --
-        -- Can also be a function which gets passed a table with the keys
-        -- * query_string: eg '@function.inner'
-        -- * method: eg 'v' or 'o'
-        -- and should return the mode ('v', 'V', or '<c-v>') or a table
-        -- mapping query_strings to modes.
-        selection_modes = {
-          ['@parameter.outer'] = 'v', -- charwise
-          ['@function.outer'] = 'V', -- linewise
-          ['@class.outer'] = '<c-v>', -- blockwise
-        },
-        keymaps = {
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
-          ['ab'] = '@block.outer',
-          ['ib'] = '@block.inner',
-          ['al'] = '@loop.outer',
-          ['il'] = '@loop.inner',
-          ['a/'] = '@comment.outer',
-          ['i/'] = '@comment.outer', -- no inner for comment
-          ['aa'] = '@parameter.outer', -- parameter -> argument
-          ['ia'] = '@parameter.inner',
-        },
-        -- If you set this to `true` (default is `false`) then any textobject is
-        -- extended to include preceding or succeeding whitespace. Succeeding
-        -- whitespace has priority in order to act similarly to eg the built-in
-        -- `ap`.
-        -- Can also be a function which gets passed a table with the keys
-        -- * query_string: eg '@function.inner'
-        -- * selection_mode: eg 'v'
-        -- and should return true of false
-        include_surrounding_whitespace = false,
+    ensure_installed = { 'yaml', 'toml', 'python', 'bash', 'Dockerfile' },
+    highlights = { enable = true },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = 'gnn', -- set to `false` to disable one of the mappings
+        node_incremental = 'grn',
+        scope_incremental = 'grc',
+        node_decremental = 'grm',
       },
     },
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you use standalone mini plugins
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
   },
 }
 
